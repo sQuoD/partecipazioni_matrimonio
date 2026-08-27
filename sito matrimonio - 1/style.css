@@ -1,0 +1,1535 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100vh;
+
+    background-color: #f8f6ef;
+    background-image: url("sfondo.png");
+    background-size: min(100vw, 850px) auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    color: #506044;
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   BUSTA INVITO
+========================================================= */
+
+.envelope-wrapper {
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background-color: #f4efe2;
+
+    background-image: none;
+
+    z-index: 10000;
+
+    cursor: pointer;
+
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.envelope {
+    position: relative;
+
+    width: 520px;
+
+    max-width: 90vw;
+
+    height: 350px;
+
+    background-color: #e4decb;
+
+    border-radius: 8px;
+
+    box-shadow: 0 20px 45px rgba(80, 96, 68, 0.25);
+
+    perspective: 1200px;
+}
+
+/* Flap Superiore */
+.flap {
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 0;
+
+    height: 0;
+
+    border-left: 260px solid transparent;
+
+    border-right: 260px solid transparent;
+
+    border-top: 190px solid #d4cca6;
+
+    transform-origin: top;
+
+    transition: transform 0.6s ease 0.2s, z-index 0.2s step-end 0.5s;
+
+    z-index: 5;
+}
+
+/* Tasca Frontale della busta */
+.pocket {
+    position: absolute;
+
+    bottom: 0;
+
+    left: 0;
+
+    width: 0;
+
+    height: 0;
+
+    border-left: 260px solid #e8e3d3;
+
+    border-right: 260px solid #e8e3d3;
+
+    border-bottom: 200px solid #dfd8c3;
+
+    border-radius: 0 0 8px 8px;
+
+    z-index: 4;
+}
+
+/* Sigillo in ceralacca */
+.wax-seal {
+    position: absolute;
+
+    top: 160px;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 70px;
+
+    height: 70px;
+
+    background: radial-gradient(circle, #b8860b 0%, #8b5a2b 100%);
+
+    border-radius: 50%;
+
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 6;
+
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.seal-initials {
+    font-family: "Cormorant Garamond", serif;
+
+    font-style: italic;
+
+    color: #fff;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+}
+
+/* Anteprima lettera dentro la busta */
+.letter-preview {
+    position: absolute;
+
+    bottom: 15px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 460px;
+
+    max-width: 85vw;
+
+    height: 290px;
+
+    background: #ffffff;
+
+    border-radius: 6px;
+
+    padding: 35px 25px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    z-index: 2;
+
+    transition: transform 0.7s ease 0.6s;
+}
+
+.letter-title {
+    font-family: "Cormorant Garamond", serif;
+
+    font-style: italic;
+
+    font-size: 42px;
+
+    color: #718c62;
+
+    margin: 45px 0 10px 0;
+}
+
+.letter-sub {
+    font-family: Georgia, serif;
+
+    font-size: 20px;
+
+    color: #b49b70;
+
+    margin: 0;
+
+    letter-spacing: 1px;
+}
+
+.envelope-hint {
+    margin-top: 45px;
+
+    font-family: Georgia, serif;
+
+    font-size: 18px;
+
+    color: #718c62;
+
+    letter-spacing: 1px;
+
+    animation: pulsanteGlow 1.8s infinite alternate;
+}
+
+@keyframes pulsanteGlow {
+    from {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-4px);
+    }
+}
+
+/* Animazione all'apertura */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+
+    z-index: 1;
+}
+
+.envelope-wrapper.open .wax-seal {
+    opacity: 0;
+
+    transform: translate(-50%, -50%) scale(0.5);
+}
+
+.envelope-wrapper.open .letter-preview {
+    transform: translate(-50%, -170px);
+}
+
+.envelope-wrapper.fade-out {
+    opacity: 0;
+
+    visibility: hidden;
+}
+
+
+/* =========================================================
+   CONTAINER PRINCIPALE
+========================================================= */
+
+.container {
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 0;
+}
+
+
+/* =========================================================
+   PAGINA INVITO
+========================================================= */
+
+.invito {
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding: 4vh 5vw;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    position: relative;
+
+    animation: comparsa 0.8s ease;
+}
+
+
+/* =========================================================
+   NOMI SPOSI
+========================================================= */
+
+h1 {
+     margin: 0;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-style: italic;
+
+    font-size: clamp(50px, 7vw, 90px);
+
+    line-height: 1.05;
+
+    font-weight: normal;
+
+    letter-spacing: 2px;
+
+    color: #718c62;
+}
+
+
+/* =========================================================
+   AMPERSAND
+========================================================= */
+
+.ampersand {
+   display: block;
+
+    margin: 8px 0;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 36px;
+
+    line-height: 1;
+
+    font-weight: normal;
+
+    color: #b49b70;
+}
+
+
+/* =========================================================
+   SOTTOTITOLO
+========================================================= */
+
+h3 {
+    margin: 35px 0 20px;
+
+    font-size: 24px;
+
+    line-height: 1.3;
+
+    font-weight: normal;
+
+    color: #718c62;
+}
+
+
+/* =========================================================
+   TESTO INVITO
+========================================================= */
+
+.testo {
+    max-width: 480px;
+
+    margin: 0 auto;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    color: #596052;
+}
+
+
+/* =========================================================
+   LINEA DECORATIVA
+========================================================= */
+
+.linea {
+    width: 180px;
+
+    height: 1px;
+
+    margin: 35px auto;
+
+    background-color: #c7b58b;
+}
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+.data {
+    margin: 0;
+
+    font-size: 34px;
+
+    line-height: 1.3;
+
+    letter-spacing: 3px;
+
+    color: #718c62;
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+.location {
+    margin: 35px 0 0;
+
+    font-size: 19px;
+
+    line-height: 1.6;
+
+    color: #596052;
+}
+
+.location strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 20px;
+
+    line-height: 1.4;
+
+    letter-spacing: 2px;
+
+    font-weight: normal;
+
+    color: #506044;
+}
+
+
+/* =========================================================
+   PULSANTE CONFERMA PRESENZA
+========================================================= */
+
+.conferma-presenza {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.conferma-presenza button {
+    display: inline-block;
+
+    padding: 14px 35px;
+
+    border: 1px solid #718c62;
+
+    border-radius: 30px;
+
+    background: transparent;
+
+    color: #718c62;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 17px;
+
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.conferma-presenza button:hover {
+    background-color: #718c62;
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   PAGINA COUNTDOWN
+========================================================= */
+
+.countdown-page {
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding: 4vh 5vw;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    animation: comparsa 0.6s ease;
+}
+
+.countdown-page h2 {
+    margin: 0 0 10px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-style: italic;
+
+    font-size: clamp(34px, 4.5vw, 60px);
+
+    line-height: 1.3;
+
+    font-weight: normal;
+
+    color: #718c62;
+}
+
+.testo-countdown {
+    margin-bottom: 2vh;
+
+    font-size: clamp(17px, 1.8vw, 24px);
+
+    color: #596052;
+}
+
+.countdown-grid {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: clamp(12px, 2vw, 30px);
+
+    margin: 2vh 0;
+
+    flex-wrap: wrap;
+}
+
+.countdown-item {
+    background: transparent;
+
+    border: none;
+
+    padding: 10px 15px;
+
+    min-width: clamp(70px, 8vw, 110px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    box-shadow: none;
+}
+
+.countdown-item span {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(36px, 4vw, 64px);
+
+    font-weight: bold;
+
+    color: #718c62;
+
+    line-height: 1;
+
+    margin-bottom: 6px;
+}
+
+.countdown-item label {
+    font-size: clamp(11px, 1.2vw, 16px);
+
+    text-transform: uppercase;
+
+    letter-spacing: 2px;
+
+    color: #506044;
+}
+
+
+/* =========================================================
+   SEZIONE MAPPA GOOGLE
+========================================================= */
+
+.mappa-box {
+    margin-top: 2vh;
+
+    text-align: center;
+}
+
+.frase-mappa {
+    font-size: clamp(16px, 1.8vw, 22px);
+
+    line-height: 1.6;
+
+    color: #506044;
+
+    margin-bottom: 2vh;
+}
+
+.btn-mappa {
+    display: inline-block;
+
+    padding: 15px 35px;
+
+    border: 1px solid #718c62;
+
+    border-radius: 35px;
+
+    background: rgba(255, 255, 255, 0.85);
+
+    color: #718c62;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(15px, 1.5vw, 20px);
+
+    text-decoration: none;
+
+    backdrop-filter: blur(4px);
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+}
+
+.btn-mappa:hover {
+    background-color: #718c62;
+
+    color: white;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 20px rgba(113, 140, 98, 0.25);
+}
+
+
+/* =========================================================
+   PAGINA CONFERMA
+========================================================= */
+
+.conferma {
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding: 4vh 5vw;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    animation: comparsa 0.6s ease;
+}
+
+
+/* =========================================================
+   TITOLO CONFERMA
+========================================================= */
+
+.conferma h2 {
+    margin: 0 0 10px;
+
+    font-size: clamp(30px, 3.8vw, 50px);
+
+    line-height: 1.3;
+
+    font-weight: normal;
+
+    color: #718c62;
+}
+
+.conferma p {
+    margin: 0 0 25px;
+
+    font-size: clamp(16px, 1.8vw, 22px);
+
+    line-height: 1.6;
+
+    color: #596052;
+}
+
+
+/* =========================================================
+   CONTENITORE PERSONE
+========================================================= */
+
+#persone {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+/* =========================================================
+   INPUT PERSONA
+========================================================= */
+
+.nomePersona {
+    display: block;
+
+    width: 100%;
+
+    max-width: 480px;
+
+    height: 56px;
+
+    padding: 0 20px;
+
+    margin: 10px 0;
+
+    border: 1px solid #c5d2bb;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    color: #506044;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(16px, 1.6vw, 20px);
+
+    outline: none;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.nomePersona:focus {
+    border-color: #718c62;
+
+    box-shadow:
+        0 0 0 3px rgba(113, 140, 98, 0.12);
+}
+
+.nomePersona::placeholder {
+    color: #92998d;
+}
+
+
+/* =========================================================
+   AGGIUNGI PERSONA
+========================================================= */
+
+.aggiungi {
+    margin: 12px 0 25px;
+
+    padding: 12px 28px;
+
+    border: 1px solid #718c62;
+
+    border-radius: 28px;
+
+    background: rgba(255, 255, 255, 0.6);
+
+    color: #718c62;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(14px, 1.4vw, 18px);
+
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.aggiungi:hover:not(:disabled) {
+    background-color: #718c62;
+
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+.aggiungi:disabled {
+    background-color: #b7c5aa;
+
+    border-color: #b7c5aa;
+
+    color: white;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+.checkbox-container {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    margin: 25px 0;
+
+    font-size: clamp(16px, 1.7vw, 22px);
+
+    line-height: 1.4;
+
+    color: #506044;
+
+    cursor: pointer;
+}
+
+
+/* Nascondo checkbox originale */
+
+.checkbox-container input {
+    position: absolute;
+
+    width: 1px;
+
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* Checkbox personalizzato */
+
+.checkmark {
+    position: relative;
+
+    width: 26px;
+
+    height: 26px;
+
+    flex-shrink: 0;
+
+    border: 1.5px solid #718c62;
+
+    border-radius: 6px;
+
+    background: white;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+/* Checkbox selezionato */
+
+.checkbox-container input:checked + .checkmark {
+    background-color: #718c62;
+
+    border-color: #718c62;
+}
+
+
+/* Check */
+
+.checkbox-container input:checked + .checkmark::after {
+    content: "✓";
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform: translate(-50%, -55%);
+
+    color: white;
+
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   PULSANTE INVIA
+========================================================= */
+
+.invia {
+    display: inline-block;
+
+    padding: 15px 42px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background-color: #718c62;
+
+    color: white;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(16px, 1.6vw, 22px);
+
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 20px rgba(113, 140, 98, 0.25);
+
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+}
+
+.invia:hover:not(:disabled) {
+    background-color: #5f7952;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 25px rgba(95, 121, 82, 0.35);
+}
+
+.invia:disabled {
+    background-color: #b7c5aa;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   PULSANTE TORNA INDIETRO
+========================================================= */
+
+.indietro {
+    display: inline-block;
+
+    margin-top: 20px;
+
+    padding: 5px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #718c62;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    cursor: pointer;
+}
+
+.indietro:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup {
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    padding: 20px;
+
+    background: rgba(60, 80, 50, 0.45);
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 999;
+}
+
+
+/* =========================================================
+   POPUP CARD
+========================================================= */
+
+.popup-card {
+    width: 90%;
+
+    max-width: 420px;
+
+    padding: 40px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.2);
+
+    animation: entra 0.5s ease;
+}
+
+
+/* =========================================================
+   POPUP TITOLO
+========================================================= */
+
+.popup-card h2 {
+    margin: 15px 0;
+
+    color: #718c62;
+
+    font-size: 27px;
+
+    font-weight: normal;
+}
+
+.popup-card p {
+    margin: 0;
+
+    color: #596052;
+
+    font-size: 17px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ELEMENTI POPUP
+========================================================= */
+
+.pianta {
+    font-size: 70px;
+
+    line-height: 1;
+}
+
+.fogliaAnimata {
+    margin-top: 15px;
+
+    font-size: 45px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   ELEMENTI DECORATIVI VECCHI
+========================================================= */
+
+.foglia,
+.foglia1,
+.foglia2 {
+    display: none;
+}
+
+
+/* =========================================================
+   ANIMAZIONE COMPARSA
+========================================================= */
+
+@keyframes comparsa {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   ANIMAZIONE POPUP
+========================================================= */
+
+@keyframes entra {
+
+    from {
+        opacity: 0;
+
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   TABLET (max-width: 768px)
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .container {
+        min-height: 100vh;
+
+        padding: 40px 20px;
+    }
+
+    .invito,
+    .countdown-page,
+    .conferma {
+        max-width: 520px;
+
+        padding: 45px 35px;
+
+        background-size: 520px auto;
+    }
+
+    h1 {
+        font-size: 55px;
+    }
+
+    .data {
+        font-size: 30px;
+    }
+
+    /* Adattamento Busta per Tablet */
+    .envelope {
+        width: 440px;
+
+        height: 300px;
+    }
+
+    .flap {
+        border-left-width: 220px;
+
+        border-right-width: 220px;
+
+        border-top-width: 160px;
+    }
+
+    .pocket {
+        border-left-width: 220px;
+
+        border-right-width: 220px;
+
+        border-bottom-width: 170px;
+    }
+
+    .wax-seal {
+        top: 135px;
+
+        width: 62px;
+
+        height: 62px;
+    }
+
+    .letter-preview {
+        width: 390px;
+
+        height: 250px;
+    }
+
+    .letter-title {
+        font-size: 34px;
+
+        margin-top: 35px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE (max-width: 600px)
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .container {
+        width: 100%;
+
+        min-height: 100vh;
+
+        padding: 30px 15px;
+    }
+
+    .invito,
+    .countdown-page,
+    .conferma {
+        width: 100%;
+
+        padding: 40px 22px;
+
+        border-radius: 4px;
+
+        background-size: 100% auto;
+    }
+
+    h1 {
+        font-size: 46px;
+    }
+
+    .ampersand {
+        font-size: 30px;
+
+        margin: 6px 0;
+    }
+
+    h3 {
+        margin-top: 30px;
+
+        font-size: 21px;
+    }
+
+    .testo {
+        font-size: 16px;
+
+        line-height: 1.7;
+    }
+
+    .data {
+        font-size: 25px;
+
+        letter-spacing: 2px;
+    }
+
+    .location {
+        margin-top: 30px;
+
+        font-size: 17px;
+    }
+
+    .location strong {
+        font-size: 17px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .conferma-presenza {
+        margin-top: 35px;
+    }
+
+    .conferma-presenza button {
+        width: 100%;
+
+        max-width: 280px;
+
+        padding: 13px 20px;
+
+        font-size: 16px;
+    }
+
+    /* Adattamento Busta per Mobile */
+    .envelope {
+        width: 310px;
+
+        height: 210px;
+    }
+
+    .flap {
+        border-left-width: 155px;
+
+        border-right-width: 155px;
+
+        border-top-width: 115px;
+    }
+
+    .pocket {
+        border-left-width: 155px;
+
+        border-right-width: 155px;
+
+        border-bottom-width: 120px;
+    }
+
+    .wax-seal {
+        top: 95px;
+
+        width: 52px;
+
+        height: 52px;
+    }
+
+    .seal-initials {
+        font-size: 15px;
+    }
+
+    .letter-preview {
+        width: 270px;
+
+        height: 175px;
+
+        padding: 20px 15px;
+    }
+
+    .letter-title {
+        font-size: 26px;
+
+        margin-top: 20px;
+    }
+
+    .letter-sub {
+        font-size: 14px;
+    }
+
+    .envelope-hint {
+        font-size: 15px;
+
+        margin-top: 30px;
+    }
+
+    .envelope-wrapper.open .letter-preview {
+        transform: translate(-50%, -105px);
+    }
+
+    /* Countdown mobile grid */
+    .countdown-grid {
+        gap: 10px;
+    }
+
+    .countdown-item {
+        min-width: 70px;
+
+        padding: 10px 8px;
+    }
+
+    .countdown-item span {
+        font-size: 30px;
+    }
+
+    .countdown-item label {
+        font-size: 10px;
+    }
+
+    .conferma h2 {
+        font-size: 28px;
+    }
+
+    .conferma p {
+        font-size: 16px;
+    }
+
+    .checkbox-container {
+        font-size: 15px;
+    }
+
+    .invia {
+        width: 100%;
+
+        max-width: 220px;
+    }
+
+    .popup-card {
+        padding: 35px 25px;
+    }
+
+    .popup-card h2 {
+        font-size: 24px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE PICCOLO
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .container {
+        padding: 25px 12px;
+    }
+
+
+    .invito,
+    .conferma {
+        padding: 35px 20px;
+    }
+
+
+    h1 {
+        font-size: 40px;
+    }
+
+
+    .ampersand {
+        font-size: 28px;
+    }
+
+
+    h3 {
+        font-size: 20px;
+    }
+
+
+    .testo {
+        font-size: 15px;
+    }
+
+
+    .data {
+        font-size: 22px;
+
+        letter-spacing: 1px;
+    }
+
+
+    .location {
+        font-size: 16px;
+    }
+
+
+    .location strong {
+        font-size: 16px;
+    }
+
+
+    .nomePersona {
+        height: 50px;
+
+        font-size: 15px;
+    }
+
+
+    .checkbox-container {
+        gap: 9px;
+
+        font-size: 14px;
+    }
+
+
+    .checkmark {
+        width: 22px;
+
+        height: 22px;
+    }
+
+}
