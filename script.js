@@ -32,26 +32,24 @@ function apriBusta() {
     }
 
 
-    // 1. Avvia l'animazione della busta (si apre il flap e fuoriesce l'invito)
+    // 1. Il sito viene mostrato subito, dietro la busta
+    mainContent.style.display = "flex";
+
+    mainContent.style.animation = "comparsa 1.6s ease";
+
+    window.scrollTo(0, 0);
+
+    aggiornaScorri();
+
+
+    // 2. Il sigillo si stacca, il lembo si apre e la busta sfuma
     wrapper.classList.add("open");
 
 
-    // 2. Dopo l'animazione della lettera, sfuma la busta e mostra il sito
+    // 3. A fine animazione la busta viene rimossa
     setTimeout(function () {
-
-        wrapper.classList.add("fade-out");
-
-        mainContent.style.display = "flex";
-
-        mainContent.style.animation = "comparsa 1s ease";
-
-
-        // Rimuove completamente il wrapper dopo il fade-out
-        setTimeout(function () {
-            wrapper.style.display = "none";
-        }, 800);
-
-    }, 1200);
+        wrapper.style.display = "none";
+    }, 2300);
 
 }
 
@@ -64,11 +62,11 @@ function mostraConferma() {
 
     document.querySelector(".invito").style.display = "none";
 
-    if (document.querySelector(".countdown-page")) {
-        document.querySelector(".countdown-page").style.display = "none";
-    }
+    document.querySelector(".conferma").style.display = "flex";
 
-    document.querySelector(".conferma").style.display = "block";
+    window.scrollTo(0, 0);
+
+    aggiornaScorri();
 
 }
 
@@ -81,11 +79,124 @@ function tornaInvito() {
 
     document.querySelector(".conferma").style.display = "none";
 
-    document.querySelector(".invito").style.display = "block";
+    // "" ripristina il display del CSS (flex)
+    document.querySelector(".invito").style.display = "";
 
-    if (document.querySelector(".countdown-page")) {
-        document.querySelector(".countdown-page").style.display = "block";
+    // Si torna in fondo all'invito, da dove si era partiti
+    document.querySelector(".conferma-presenza").scrollIntoView({ block: "center" });
+
+    aggiornaScorri();
+
+}
+
+
+/* =========================================================
+   INDICATORE "SCORRI VERSO IL BASSO"
+   Visibile finché l'invito è aperto e non si è arrivati in fondo
+========================================================= */
+
+function scorriGiu() {
+
+    window.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
+
+}
+
+function aggiornaScorri() {
+
+    let scorri = document.getElementById("scorri");
+
+    let mainContent = document.getElementById("mainContent");
+
+    let invito = document.querySelector(".invito");
+
+
+    let invitoVisibile =
+        mainContent.style.display !== "none" &&
+        invito.style.display !== "none";
+
+    let arrivatoInFondo =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 60;
+
+
+    scorri.classList.toggle("visibile", invitoVisibile && !arrivatoInFondo);
+
+}
+
+window.addEventListener("scroll", aggiornaScorri, { passive: true });
+
+window.addEventListener("resize", aggiornaScorri);
+
+
+/* =========================================================
+   COPIA IBAN
+========================================================= */
+
+function copiaIban() {
+
+    let iban = document.getElementById("iban").innerText.trim();
+
+    let btn = document.getElementById("btnCopia");
+
+
+    function fatto() {
+
+        btn.innerText = "Copiato!";
+
+        setTimeout(function () {
+            btn.innerText = "Copia IBAN";
+        }, 2000);
+
     }
+
+
+    if (navigator.clipboard && window.isSecureContext) {
+
+        navigator.clipboard.writeText(iban).then(fatto);
+
+        return;
+
+    }
+
+
+    // Alternativa per i browser che non permettono la copia diretta
+    let campo = document.createElement("textarea");
+
+    campo.value = iban;
+
+    document.body.appendChild(campo);
+
+    campo.select();
+
+    document.execCommand("copy");
+
+    document.body.removeChild(campo);
+
+    fatto();
+
+}
+
+
+/* =========================================================
+   CHIUDI POPUP
+========================================================= */
+
+function chiudiPopup() {
+
+    document.getElementById("popupSuccesso").style.display = "none";
+
+    tornaInvito();
+
+}
+
+
+/* =========================================================
+   MESSAGGIO DI ERRORE
+========================================================= */
+
+function mostraMessaggio(testo) {
+
+    document.getElementById("messaggio").innerText = testo;
 
 }
 
@@ -163,11 +274,15 @@ function aggiungiPersona() {
 
     let input = document.createElement("input");
 
+    input.type = "text";
+
     input.className = "nomePersona";
 
     input.placeholder = "Nome e Cognome";
 
     div.appendChild(input);
+
+    input.focus();
 
 }
 
@@ -210,7 +325,9 @@ function conferma() {
 
     if (lista.length === 0) {
 
-        alert("Inserisci almeno una persona");
+        mostraMessaggio("Scrivi il nome e cognome di almeno una persona.");
+
+        persone[0].focus();
 
         return;
 
@@ -221,11 +338,22 @@ function conferma() {
 
     if (!check) {
 
-        alert("Conferma la presenza");
+        mostraMessaggio("Spunta la casella «Confermo la mia presenza».");
 
         return;
 
     }
+
+
+    /* Blocca il pulsante durante l'invio (evita doppi invii) */
+
+    let btn = document.getElementById("btnConferma");
+
+    mostraMessaggio("");
+
+    btn.disabled = true;
+
+    btn.innerHTML = "Invio in corso…";
 
 
     /* =====================================================
@@ -285,7 +413,11 @@ function conferma() {
 
         console.log(error);
 
-        alert("Errore invio mail");
+        btn.disabled = false;
+
+        btn.innerHTML = "Invia conferma";
+
+        mostraMessaggio("Ops, qualcosa non ha funzionato. Controlla la connessione e riprova.");
 
     });
 

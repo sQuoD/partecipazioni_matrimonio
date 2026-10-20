@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Parisienne&display=swap"
     rel="stylesheet">
 
     <meta charset="UTF-8">
@@ -43,33 +43,87 @@
         class="envelope-wrapper"
         onclick="apriBusta()">
 
-        <div class="envelope">
+        <!-- Definizione del sigillo in ceralacca dorata -->
 
-            <!-- Flap Superiore -->
-            <div class="flap"></div>
+        <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+            <defs>
 
-            <!-- Tasca Frontale -->
-            <div class="pocket"></div>
+                <radialGradient id="ceraColore" cx="38%" cy="32%" r="78%">
+                    <stop offset="0%" stop-color="#fff6d6" />
+                    <stop offset="40%" stop-color="#f2dc98" />
+                    <stop offset="80%" stop-color="#ddbd6c" />
+                    <stop offset="100%" stop-color="#c4a052" />
+                </radialGradient>
 
-            <!-- Sigillo in ceralacca -->
-            <div class="wax-seal">
+                <radialGradient id="ceraImpronta" cx="60%" cy="65%" r="75%">
+                    <stop offset="0%" stop-color="#f7e4a8" />
+                    <stop offset="100%" stop-color="#dcbd70" />
+                </radialGradient>
 
-                <span class="seal-initials">N & M</span>
+                <!-- Bordo irregolare + riflesso lucido della cera -->
+                <filter id="ceraBordo" x="-25%" y="-25%" width="150%" height="150%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="rumore" />
+                    <feDisplacementMap in="SourceGraphic" in2="rumore" scale="16" xChannelSelector="R" yChannelSelector="G" result="forma" />
+                    <feGaussianBlur in="forma" stdDeviation="4" result="rilievo" />
+                    <feSpecularLighting in="rilievo" surfaceScale="5" specularConstant="0.75" specularExponent="22" lighting-color="#fff6dc" result="luce">
+                        <fePointLight x="40" y="20" z="160" />
+                    </feSpecularLighting>
+                    <feComposite in="luce" in2="forma" operator="in" result="luceForma" />
+                    <feComposite in="forma" in2="luceForma" operator="arithmetic" k1="0" k2="1" k3="0.7" k4="0" />
+                </filter>
 
-            </div>
+                <!-- Rilievo morbido per gli anelli impressi -->
+                <filter id="ceraRilievo" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="rilievo" />
+                    <feSpecularLighting in="rilievo" surfaceScale="3" specularConstant="0.9" specularExponent="18" lighting-color="#fff3d0" result="luce">
+                        <fePointLight x="40" y="20" z="120" />
+                    </feSpecularLighting>
+                    <feComposite in="luce" in2="SourceAlpha" operator="in" result="luceForma" />
+                    <feComposite in="SourceGraphic" in2="luceForma" operator="arithmetic" k1="0" k2="1" k3="0.55" k4="0" />
+                </filter>
 
-            <!-- Anteprima della lettera che fuoriesce -->
-            <div class="letter-preview">
+                <symbol id="sigillo" viewBox="0 0 240 240">
 
-                <p class="letter-title">Nicole & Mattia</p>
+                    <!-- Cera colata, con qualche sbavatura -->
+                    <g filter="url(#ceraBordo)" fill="url(#ceraColore)">
+                        <circle cx="120" cy="120" r="92" />
+                        <ellipse cx="196" cy="150" rx="18" ry="13" />
+                        <ellipse cx="52" cy="70" rx="15" ry="12" />
+                        <ellipse cx="88" cy="204" rx="16" ry="11" />
+                    </g>
 
-                <p class="letter-sub">Ci Sposiamo!</p>
+                    <!-- Impronta del timbro -->
+                    <circle cx="120" cy="120" r="64" fill="url(#ceraImpronta)" />
 
-            </div>
+                    <g filter="url(#ceraRilievo)">
+                        <circle cx="120" cy="120" r="64" fill="none" stroke="#e6c97c" stroke-width="5" />
+                        <circle cx="120" cy="120" r="54" fill="none" stroke="#e6c97c" stroke-width="1.5" />
+                    </g>
 
+                    <!-- Iniziali impresse (ombra, luce, lettera) -->
+                    <g font-family="'Parisienne', cursive" font-size="36" text-anchor="middle">
+                        <text x="120" y="131" fill="#8a6a28" opacity="0.6" transform="translate(1 1.4)">N<tspan font-size="28" dx="2" dy="-1">&amp;</tspan><tspan dx="2" dy="1">M</tspan></text>
+                        <text x="120" y="131" fill="#fffcee" opacity="0.95" transform="translate(-0.8 -1)">N<tspan font-size="28" dx="2" dy="-1">&amp;</tspan><tspan dx="2" dy="1">M</tspan></text>
+                        <text x="120" y="131" fill="#9c7528">N<tspan font-size="28" dx="2" dy="-1">&amp;</tspan><tspan dx="2" dy="1">M</tspan></text>
+                    </g>
+
+                </symbol>
+
+            </defs>
+        </svg>
+
+
+        <!-- Lembo di chiusura, con la punta verso il basso -->
+        <div class="env-flap-wrap">
+            <div class="env-flap"></div>
         </div>
 
-        <p class="envelope-hint">🌿 Clicca sulla busta per aprirla 🌿</p>
+
+        <!-- Sigillo sulla punta del lembo -->
+        <svg class="wax-seal" aria-hidden="true"><use href="#sigillo" /></svg>
+
+
+        <p class="envelope-hint">Tocca il sigillo per aprire</p>
 
     </div>
 
@@ -85,30 +139,22 @@
 
 
         <!-- =================================================
-             PAGINA 1 - INVITO
+             INVITO (una sola pagina che continua verso il basso)
         ================================================== -->
 
         <div class="invito">
 
 
-            <h1>
-                Nicole
-            </h1>
+            <!-- Nomi e annuncio -->
+
+            <h1>Nicole</h1>
+
+            <div class="ampersand">&amp;</div>
+
+            <h1>Mattia</h1>
 
 
-            <div class="ampersand">
-                &
-            </div>
-
-
-            <h1>
-                Mattia
-            </h1>
-
-
-            <h3>
-                Ci sposiamo!
-            </h3>
+            <h3>Ci sposiamo!</h3>
 
 
             <p class="testo">
@@ -118,7 +164,7 @@
                 Ci piacerebbe festeggiarlo con voi,<br>
 
                 per condividere e rendere speciale
-                questo giorno.
+                questo&nbsp;giorno.
 
             </p>
 
@@ -128,7 +174,11 @@
 
             <div class="data">
 
-                02&nbsp;&nbsp;|&nbsp;&nbsp;09&nbsp;&nbsp;|&nbsp;&nbsp;2027
+                <span>02</span>
+                <span class="sep"></span>
+                <span>09</span>
+                <span class="sep"></span>
+                <span>2027</span>
 
             </div>
 
@@ -136,22 +186,82 @@
             <div class="linea"></div>
 
 
+            <!-- Location e mappa -->
+
             <div class="location">
 
-                <strong>
-                    ANTICO RISTORO DEL TICINO
-                </strong>
+                <strong>Antico Ristoro del Ticino</strong>
 
                 Via Vecchia Ticino 37 · Oleggio (NO)
 
             </div>
 
 
-            <!-- =============================================
-                 PULSANTE VAI ALLA CONFERMA
-            ============================================== -->
+            <p class="frase-mappa">
+                Per comodità te lo mettiamo qui,<br>
+                così non ti perdi per strada!
+            </p>
+
+
+            <a
+                href="https://maps.google.com/?q=Antico+Ristoro+del+Ticino+Via+Vecchia+Ticino+37+Oleggio+NO"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-mappa">
+
+                Apri su Google Maps
+
+            </a>
+
+
+            <div class="linea"></div>
+
+
+            <!-- Countdown -->
+
+            <div class="countdown">
+
+                <h2>Conto alla rovescia</h2>
+
+                <p class="testo-countdown">Mancano ancora…</p>
+
+                <div class="countdown-grid">
+
+                    <div class="countdown-item">
+                        <span id="cd-giorni">00</span>
+                        <label>Giorni</label>
+                    </div>
+
+                    <div class="countdown-item">
+                        <span id="cd-ore">00</span>
+                        <label>Ore</label>
+                    </div>
+
+                    <div class="countdown-item">
+                        <span id="cd-minuti">00</span>
+                        <label>Minuti</label>
+                    </div>
+
+                    <div class="countdown-item">
+                        <span id="cd-secondi">00</span>
+                        <label>Secondi</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="linea"></div>
+
+
+            <!-- Conferma presenza -->
 
             <div class="conferma-presenza">
+
+                <p class="frase-mappa">
+                    Ci sarai? Faccelo sapere qui sotto
+                </p>
 
                 <button
                     type="button"
@@ -164,86 +274,44 @@
             </div>
 
 
-        </div>
+            <div class="linea"></div>
 
 
+            <!-- Regalo / IBAN -->
 
-        <!-- =================================================
-             PAGINA COUNTDOWN (SECONDA PAGINA IN SCROLL)
-        ================================================== -->
+            <div class="regalo">
 
-        <div class="countdown-page">
-
-
-            <h2>
-                Conto alla rovescia
-            </h2>
-
-
-            <p class="testo-countdown">
-                Mancano ancora...
-            </p>
-
-
-            <div class="countdown-grid">
-
-                <div class="countdown-item">
-
-                    <span id="cd-giorni">00</span>
-
-                    <label>Giorni</label>
-
-                </div>
-
-                <div class="countdown-item">
-
-                    <span id="cd-ore">00</span>
-
-                    <label>Ore</label>
-
-                </div>
-
-                <div class="countdown-item">
-
-                    <span id="cd-minuti">00</span>
-
-                    <label>Minuti</label>
-
-                </div>
-
-                <div class="countdown-item">
-
-                    <span id="cd-secondi">00</span>
-
-                    <label>Secondi</label>
-
-                </div>
-
-            </div>
-
-
-            <!-- =============================================
-                 SEZIONE MAPPA GOOGLE
-            ============================================== -->
-
-            <div class="mappa-box">
-
-                <div class="linea" style="margin: 25px auto;"></div>
+                <h2>Un pensiero per noi</h2>
 
                 <p class="frase-mappa">
-                    📍 Per comodità te lo mettiamo qui,<br>
-                    così non ti perdi per strada! 😉
+                    Il regalo più bello<br>
+                    sarà avervi accanto a&nbsp;noi.<br>
+                    Se desiderate farci un dono,<br>
+                    ci aiuterete a realizzare<br>
+                    il nostro viaggio di&nbsp;nozze.
                 </p>
 
-                <a
-                    href="https://maps.google.com/?q=Antico+Ristoro+del+Ticino+Via+Vecchia+Ticino+37+Oleggio+NO"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn-mappa">
+                <div class="linea"></div>
 
-                    🗺️ Apri le indicazioni su Google Maps
+                <div class="iban-box">
 
-                </a>
+                    <span class="iban-intestatario">Intestato a Nicole e Mattia</span>
+
+                    <span class="iban" id="iban">IT00 X000 0000 0000 0000 0000 000</span>
+
+                    <button
+                        type="button"
+                        class="btn-copia"
+                        id="btnCopia"
+                        onclick="copiaIban()">
+
+                        Copia IBAN
+
+                    </button>
+
+                </div>
+
+                <div class="linea"></div>
 
             </div>
 
@@ -253,7 +321,7 @@
 
 
         <!-- =================================================
-             PAGINA 2 - CONFERMA PRESENZA
+             PAGINA CONFERMA PRESENZA
         ================================================== -->
 
         <div
@@ -268,8 +336,9 @@
 
             <p>
 
-                Inserisci il nome e cognome
-                degli invitati.
+                Scrivi nome e cognome di ogni persona che verrà.<br>
+                Se siete in più di uno, tocca
+                «+ Aggiungi persona».
 
             </p>
 
@@ -327,6 +396,14 @@
             </label>
 
 
+            <!-- Messaggio di errore (al posto dei popup del browser) -->
+
+            <p
+                id="messaggio"
+                class="messaggio"
+                role="alert"></p>
+
+
             <!-- =============================================
                  INVIA CONFERMA
             ============================================== -->
@@ -367,6 +444,26 @@
 
 
     <!-- =====================================================
+         INDICATORE "SCORRI VERSO IL BASSO"
+         Resta fisso in fondo allo schermo finché non si arriva
+         alla fine dell'invito
+    ====================================================== -->
+
+    <button
+        type="button"
+        id="scorri"
+        class="scorri"
+        onclick="scorriGiu()">
+
+        <span class="scorri-testo">Scorri verso il basso</span>
+
+        <span class="scorri-freccia"></span>
+
+    </button>
+
+
+
+    <!-- =====================================================
          POPUP SUCCESSO
     ====================================================== -->
 
@@ -378,11 +475,6 @@
         <div class="popup-card">
 
 
-            <div class="pianta">
-                🌿
-            </div>
-
-
             <h2>
                 Partecipazione Confermata
             </h2>
@@ -391,14 +483,19 @@
             <p>
 
                 Grazie per aver confermato
-                la vostra presenza ❤️
+                la vostra presenza
 
             </p>
 
 
-            <div class="fogliaAnimata">
-                🌱
-            </div>
+            <button
+                type="button"
+                class="invia chiudi-popup"
+                onclick="chiudiPopup()">
+
+                Torna all'invito
+
+            </button>
 
 
         </div>

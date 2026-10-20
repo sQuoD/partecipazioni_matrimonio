@@ -34,20 +34,50 @@ body {
     width: 100%;
     min-height: 100vh;
 
-    background-color: #f8f6ef;
+    background-color: #f3eee2;
 
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
+
+    font-weight: normal;
 
     color: #506044;
+    overflow-x: hidden;
 }
 
 
 /* =========================================================
-   BUSTA INVITO
+   BUSTA INVITO (a tutta pagina, lembo a punta verso il basso)
 ========================================================= */
 
 .envelope-wrapper {
+    --seal: clamp(140px, 38vw, 200px);
+
+    /* Altezza della punta del lembo */
+    --tip: 52%;
+
     position: fixed;
+
+    inset: 0;
+
+    z-index: 10000;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    perspective: 1600px;
+
+    /* Verde salvia della partecipazione */
+    background-color: #b9c6ab;
+
+    background-image: radial-gradient(ellipse at 50% 70%, rgba(255, 255, 255, 0.22) 0%, transparent 70%);
+
+    transition: opacity 0.8s ease 1.4s, transform 0.8s ease 1.4s;
+}
+
+/* Lembo: l'ombra sta sul contenitore perché il clip-path la taglierebbe */
+.env-flap-wrap {
+    position: absolute;
 
     top: 0;
 
@@ -55,239 +85,125 @@ body {
 
     width: 100%;
 
-    height: 100vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    background-color: #f4efe2;
-
-    background-image: none;
-
-    z-index: 10000;
-
-    cursor: pointer;
-
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-
-.envelope {
-    position: relative;
-
-    width: 520px;
-
-    max-width: 90vw;
-
-    height: 350px;
-
-    background-color: #e4decb;
-
-    border-radius: 8px;
-
-    box-shadow: 0 20px 45px rgba(80, 96, 68, 0.25);
-
-    perspective: 1200px;
-}
-
-/* Flap Superiore */
-.flap {
-    position: absolute;
-
-    top: 0;
-
-    left: 0;
-
-    width: 0;
-
-    height: 0;
-
-    border-left: 260px solid transparent;
-
-    border-right: 260px solid transparent;
-
-    border-top: 190px solid #d4cca6;
-
-    transform-origin: top;
-
-    transition: transform 0.6s ease 0.2s, z-index 0.2s step-end 0.5s;
-
-    z-index: 5;
-}
-
-/* Tasca Frontale della busta */
-.pocket {
-    position: absolute;
-
-    bottom: 0;
-
-    left: 0;
-
-    width: 0;
-
-    height: 0;
-
-    border-left: 260px solid #e8e3d3;
-
-    border-right: 260px solid #e8e3d3;
-
-    border-bottom: 200px solid #dfd8c3;
-
-    border-radius: 0 0 8px 8px;
-
-    z-index: 4;
-}
-
-/* Sigillo in ceralacca */
-.wax-seal {
-    position: absolute;
-
-    top: 160px;
-
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    width: 70px;
-
-    height: 70px;
-
-    background: radial-gradient(circle, #b8860b 0%, #8b5a2b 100%);
-
-    border-radius: 50%;
-
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 6;
-
-    transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.seal-initials {
-    font-family: "Cormorant Garamond", serif;
-
-    font-style: italic;
-
-    color: #fff;
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    letter-spacing: 1.5px;
-}
-
-/* Anteprima lettera dentro la busta */
-.letter-preview {
-    position: absolute;
-
-    bottom: 15px;
-
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 460px;
-
-    max-width: 85vw;
-
-    height: 290px;
-
-    background: #ffffff;
-
-    border-radius: 6px;
-
-    padding: 35px 25px;
-
-    text-align: center;
-
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    height: var(--tip);
 
     z-index: 2;
 
-    transition: transform 0.7s ease 0.6s;
+    transform-origin: top center;
+
+    filter: drop-shadow(0 4px 6px rgba(70, 85, 60, 0.22));
+
+    transition: transform 1s cubic-bezier(0.55, 0, 0.25, 1) 0.4s;
 }
 
-.letter-title {
-    font-family: "Cormorant Garamond", serif;
+.env-flap {
+    width: 100%;
 
-    font-style: italic;
+    height: 100%;
 
-    font-size: 42px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
 
-    color: #718c62;
+    background-color: #c2cdb5;
 
-    margin: 45px 0 10px 0;
+    background-image: linear-gradient(to bottom, #c9d3bd 0%, #b3c1a4 100%);
 }
 
-.letter-sub {
-    font-family: Georgia, serif;
+/* Sigillo in ceralacca dorata sulla punta del lembo */
+.wax-seal {
+    position: absolute;
 
-    font-size: 20px;
+    top: var(--tip);
 
-    color: #b49b70;
+    left: 50%;
 
-    margin: 0;
+    width: var(--seal);
 
-    letter-spacing: 1px;
+    height: var(--seal);
+
+    margin: calc(var(--seal) / -2) 0 0 calc(var(--seal) / -2);
+
+    overflow: visible;
+
+    z-index: 3;
+
+    filter: drop-shadow(0 5px 8px rgba(70, 85, 60, 0.35));
+
+    transition: transform 0.45s ease, opacity 0.45s ease;
 }
 
 .envelope-hint {
-    margin-top: 45px;
+    position: absolute;
 
-    font-family: Georgia, serif;
+    left: 0;
 
-    font-size: 18px;
+    right: 0;
 
-    color: #718c62;
+    top: calc(var(--tip) + var(--seal) / 2 + 30px);
 
-    letter-spacing: 1px;
+    margin: 0;
+
+    padding: 0 16px;
+
+    text-align: center;
+
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
+
+    font-size: 25px;
+
+    color: #506044;
+
+    letter-spacing: 0;
 
     animation: pulsanteGlow 1.8s infinite alternate;
+
+    transition: opacity 0.3s ease;
 }
 
 @keyframes pulsanteGlow {
     from {
-        opacity: 0.7;
-        transform: translateY(0);
+        opacity: 0.6;
     }
     to {
         opacity: 1;
-        transform: translateY(-4px);
     }
 }
 
-/* Animazione all'apertura */
-.envelope-wrapper.open .flap {
-    transform: rotateX(180deg);
+/* Animazione all'apertura:
+   1. il sigillo si stacca  2. il lembo si solleva  3. la busta sfuma */
+.envelope-wrapper.open {
+    cursor: default;
 
-    z-index: 1;
+    opacity: 0;
+
+    transform: translateY(6%);
+}
+
+.envelope-wrapper.open .envelope-hint {
+    animation: none;
+
+    opacity: 0;
 }
 
 .envelope-wrapper.open .wax-seal {
     opacity: 0;
 
-    transform: translate(-50%, -50%) scale(0.5);
+    transform: scale(1.25);
 }
 
-.envelope-wrapper.open .letter-preview {
-    transform: translate(-50%, -170px);
+.envelope-wrapper.open .env-flap-wrap {
+    transform: rotateX(180deg);
 }
 
-.envelope-wrapper.fade-out {
-    opacity: 0;
+@media (prefers-reduced-motion: reduce) {
 
-    visibility: hidden;
+    .envelope-wrapper,
+    .env-flap-wrap,
+    .wax-seal {
+        transition-duration: 0.01s;
+
+        transition-delay: 0s;
+    }
+
 }
 
 
@@ -300,7 +216,7 @@ body {
 
     min-height: 100vh;
 
-    padding: 50px 20px;
+    padding: 0;
 
     display: flex;
 
@@ -310,282 +226,399 @@ body {
 
     align-items: center;
 
-    gap: 50px;
+    gap: 0;
 }
 
 
 /* =========================================================
-   PAGINA INVITO
+   CARTONCINO E FOGLIE
+   L'invito è un unico cartoncino che continua verso il basso,
+   con le foglie di sfondo.png negli angoli (alto a destra e
+   basso a sinistra). Il cartoncino è più largo delle foglie
+   e il testo inizia sotto il rametto, così non si sovrappongono.
 ========================================================= */
 
-.invito {
-    width: 100%;
+.invito,
+.conferma {
+    /* larghezza del cartoncino */
+    --card: min(calc(100vw - 24px), 560px);
 
-    max-width: 600px;
+    /* dimensione dell'immagine con le foglie */
+    --fiori: min(calc(100vw - 24px), 440px);
 
-    padding: 55px 45px;
+    position: relative;
+
+    isolation: isolate;
+
+    overflow: hidden;
+
+    width: var(--card);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
 
     text-align: center;
 
-    background-image: url("../sito matrimonio/sfondo.png");
+    /* Cartoncino goffrato avorio martellato:
+       piccole fossette in rilievo illuminate di lato + grana fine */
+    background-color: #fbf6ea;
 
-    background-size: 600px auto;
+    background-image:
+        radial-gradient(ellipse at 30% 15%, rgba(255, 253, 246, 0.55) 0%, transparent 60%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.45  0 0 0 0 0.38  0 0 0 0 0.26  0 0 0 0.08 -0.02'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='g' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='0.055' numOctaves='2' seed='8' stitchTiles='stitch' result='t'/><feDiffuseLighting in='t' surfaceScale='0.7' diffuseConstant='1.12' lighting-color='%23fffaee'><feDistantLight azimuth='225' elevation='52'/></feDiffuseLighting></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
 
-    background-position: center;
+    background-size: auto, 200px 200px, 280px 280px;
 
-    background-repeat: no-repeat;
+    background-repeat: no-repeat, repeat, repeat;
 
     border-radius: 4px;
 
     box-shadow:
-        0 10px 40px rgba(80, 96, 68, 0.08);
-
-    position: relative;
+        inset 0 0 40px rgba(150, 120, 70, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+        0 2px 6px rgba(80, 70, 40, 0.10),
+        0 20px 45px rgba(80, 70, 40, 0.22);
 
     animation: comparsa 0.8s ease;
 }
 
+.invito::before,
+.conferma::before,
+.invito::after,
+.conferma::after {
+    content: "";
 
-/* =========================================================
-   NOMI SPOSI
-========================================================= */
+    position: absolute;
 
-h1 {
-     margin: 0;
+    z-index: -1;
 
-    font-family: "Cormorant Garamond", serif;
+    pointer-events: none;
 
-    font-style: italic;
+    /* versione con lo sfondo trasparente, così si fonde con la pergamena */
+    background-image: url("sfondo-trasparente.png");
 
-    font-size: 64px;
+    background-size: var(--fiori) auto;
 
-    line-height: 1.05;
+    background-repeat: no-repeat;
+}
 
-    font-weight: normal;
+/* Rametto in alto a destra */
+.invito::before,
+.conferma::before {
+    top: 0;
 
-    letter-spacing: 2px;
+    right: 0;
 
-    color: #718c62;
+    width: calc(var(--fiori) * 0.48);
+
+    height: calc(var(--fiori) * 0.68);
+
+    background-position: right top;
+
+    -webkit-mask-image: radial-gradient(ellipse at top right, #000 72%, transparent 100%);
+
+    mask-image: radial-gradient(ellipse at top right, #000 72%, transparent 100%);
+}
+
+/* Rametto in basso a sinistra */
+.invito::after,
+.conferma::after {
+    bottom: 0;
+
+    left: 0;
+
+    width: calc(var(--fiori) * 0.46);
+
+    height: calc(var(--fiori) * 0.64);
+
+    background-position: left bottom;
+
+    -webkit-mask-image: radial-gradient(ellipse at bottom left, #000 72%, transparent 100%);
+
+    mask-image: radial-gradient(ellipse at bottom left, #000 72%, transparent 100%);
 }
 
 
 /* =========================================================
-   AMPERSAND
+   INVITO
 ========================================================= */
 
-.ampersand {
-   display: block;
+.invito {
+    /* sopra: spazio per il rametto in alto
+       sotto: spazio per il rametto in basso */
+    padding:
+        calc(var(--fiori) * 0.40)
+        clamp(22px, 6vw, 56px)
+        calc(var(--fiori) * 0.50);
+}
 
-    margin: 8px 0;
 
-    font-family: "Cormorant Garamond", serif;
+/* Nomi sposi */
+h1 {
+    margin: 0;
 
-    font-size: 36px;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
 
-    line-height: 1;
+    font-size: clamp(58px, 15vw, 84px);
+
+    line-height: 1.1;
 
     font-weight: normal;
+
+    color: #718c62;
+}
+
+.ampersand {
+    display: block;
+
+    margin: 2px 0;
+
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
+
+    font-size: clamp(34px, 8.5vw, 46px);
+
+    line-height: 1;
 
     color: #b49b70;
 }
 
 
-/* =========================================================
-   SOTTOTITOLO
-========================================================= */
-
+/* Sottotitolo */
 h3 {
-    margin: 35px 0 20px;
+    margin: 30px 0 14px;
 
-    font-size: 24px;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
+
+    font-size: clamp(32px, 8.5vw, 42px);
 
     line-height: 1.3;
 
-    font-weight: normal;
+    font-weight: 400;
 
     color: #718c62;
 }
 
 
-/* =========================================================
-   TESTO INVITO
-========================================================= */
-
+/* Testo invito */
 .testo {
-    max-width: 480px;
+    max-width: 440px;
 
     margin: 0 auto;
 
-    font-size: 18px;
+    font-size: clamp(24px, 6.2vw, 28px);
 
-    line-height: 1.7;
+    line-height: 1.5;
 
     color: #596052;
 }
 
 
-/* =========================================================
-   LINEA DECORATIVA
-========================================================= */
-
+/* Linea decorativa */
 .linea {
-    width: 180px;
+    width: 220px;
 
-    height: 1px;
+    max-width: 70%;
 
-    margin: 35px auto;
+    height: 0;
 
-    background-color: #c7b58b;
+    margin: 34px auto;
+
+    border-top: 1px solid #b9a27a;
 }
 
 
-/* =========================================================
-   DATA
-========================================================= */
-
+/* Data */
 .data {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: clamp(18px, 5vw, 28px);
+
     margin: 0;
 
-    font-size: 34px;
+    font-size: clamp(30px, 8vw, 40px);
+
+    font-weight: 300;
+
+    font-variant-numeric: lining-nums;
 
     line-height: 1.3;
 
-    letter-spacing: 3px;
+    letter-spacing: 1px;
 
     color: #718c62;
 }
 
 
-/* =========================================================
-   LOCATION
-========================================================= */
+/* Separatori della data: righe verticali tutte uguali */
+.data .sep {
+    width: 1px;
 
+    height: 1.15em;
+
+    background-color: #b49b70;
+}
+
+
+/* Location */
 .location {
-    margin: 35px 0 0;
+    margin: 0;
 
-    font-size: 19px;
+    font-size: clamp(19px, 4.8vw, 22px);
 
-    line-height: 1.6;
+    line-height: 1.5;
 
     color: #596052;
+
+    font-family: "Cormorant Garamond", Georgia, serif;
+
+    font-weight: 500;
 }
 
 .location strong {
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 
-    font-size: 20px;
+    font-size: clamp(15px, 3.9vw, 18px);
 
-    line-height: 1.4;
+    font-weight: 600;
 
-    letter-spacing: 2px;
+    letter-spacing: 3px;
 
-    font-weight: normal;
+    text-transform: uppercase;
 
     color: #506044;
 }
 
 
-/* =========================================================
-   PULSANTE CONFERMA PRESENZA
-========================================================= */
+/* Frasi in corsivo (mappa e conferma) */
+.frase-mappa {
+    margin: 22px 0 18px;
 
-.conferma-presenza {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    font-size: clamp(23px, 6vw, 27px);
+
+    line-height: 1.5;
+
+    color: #596052;
 }
 
-.conferma-presenza button {
-    display: inline-block;
 
-    padding: 14px 35px;
+/* =========================================================
+   PULSANTI (mappa e conferma)
+========================================================= */
+
+.btn-mappa,
+.conferma-presenza button {
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-width: 250px;
+
+padding: 12px 32px;
 
     border: 1px solid #718c62;
 
-    border-radius: 30px;
+    border-radius: 999px;
 
-    background: transparent;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
 
-    color: #718c62;
+font-size: 22px;
 
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: 17px;
+font-weight: normal;
 
     line-height: 1.2;
+
+letter-spacing: 0.3px;
+
+    text-decoration: none;
 
     cursor: pointer;
 
     transition:
         background-color 0.3s ease,
         color 0.3s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Mappa: contorno verde */
+.btn-mappa {
+    background: transparent;
+
+    color: #506044;
+}
+
+.btn-mappa:hover {
+    background-color: #718c62;
+
+    color: #fff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 20px rgba(113, 140, 98, 0.25);
+}
+
+/* Conferma: pieno verde */
+.conferma-presenza {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+.conferma-presenza .frase-mappa {
+    margin-top: 0;
+}
+
+.conferma-presenza button {
+    background: #718c62;
+
+    color: #fff;
+
+    box-shadow: 0 6px 20px rgba(113, 140, 98, 0.25);
 }
 
 .conferma-presenza button:hover {
-    background-color: #718c62;
-
-    color: white;
+    background-color: #5f7952;
 
     transform: translateY(-2px);
 }
 
 
 /* =========================================================
-   PAGINA COUNTDOWN
+   COUNTDOWN
 ========================================================= */
 
-.countdown-page {
-    width: 100%;
+.countdown h2 {
+    margin: 0 0 4px;
 
-    max-width: 600px;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
 
-    padding: 50px 45px;
-
-    text-align: center;
-
-    background-color: rgba(255, 255, 255, 0.90);
-
-    background-image: url("../sito matrimonio/sfondo.png");
-
-    background-size: 600px auto;
-
-    background-position: center;
-
-    background-repeat: no-repeat;
-
-    border-radius: 4px;
-
-    box-shadow:
-        0 10px 40px rgba(80, 96, 68, 0.10);
-
-    animation: comparsa 0.6s ease;
-}
-
-.countdown-page h2 {
-    margin: 0 0 10px;
-
-    font-family: "Cormorant Garamond", serif;
-
-    font-style: italic;
-
-    font-size: 38px;
+    font-size: clamp(32px, 8.5vw, 42px);
 
     line-height: 1.3;
 
-    font-weight: normal;
+    font-weight: 400;
 
     color: #718c62;
 }
 
 .testo-countdown {
-    margin-bottom: 30px;
+    margin: 0 0 18px;
 
-    font-size: 18px;
+    font-size: clamp(23px, 6vw, 27px);
 
     color: #596052;
 }
@@ -595,25 +628,158 @@ h3 {
 
     justify-content: center;
 
-    align-items: center;
-
-    gap: 15px;
-
-    margin: 30px 0;
-
-    flex-wrap: wrap;
+    gap: clamp(14px, 5vw, 32px);
 }
 
 .countdown-item {
-    background: rgba(248, 246, 239, 0.85);
+    flex: 0 1 90px;
 
-    border: 1px solid #c5d2bb;
+    display: flex;
 
-    border-radius: 12px;
+    flex-direction: column;
 
-    padding: 15px 12px;
+    align-items: center;
+}
 
-    min-width: 90px;
+.countdown-item span {
+    font-size: clamp(36px, 9vw, 48px);
+
+    font-weight: 300;
+
+    /* Cifre tutte della stessa altezza */
+    font-variant-numeric: lining-nums tabular-nums;
+
+    line-height: 1;
+
+    color: #718c62;
+}
+
+.countdown-item label {
+    margin-top: 4px;
+
+    font-size: 19px;
+
+    font-weight: normal;
+
+    letter-spacing: 0;
+
+    color: #506044;
+}
+
+
+/* =========================================================
+   REGALO / IBAN
+========================================================= */
+
+.regalo h2 {
+    margin: 0 0 4px;
+
+    font-size: clamp(32px, 8.5vw, 42px);
+
+    font-weight: normal;
+
+    line-height: 1.3;
+
+    color: #718c62;
+}
+
+.regalo .frase-mappa {
+    margin-top: 6px;
+}
+
+.iban-box {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    /* come la data: niente riquadro, sta direttamente sul cartoncino */
+    padding: 0;
+}
+
+/* IBAN in carattere classico: deve essere leggibile e copiabile */
+.iban-intestatario,
+.iban {
+    font-family: "Cormorant Garamond", Georgia, serif;
+
+    color: #506044;
+}
+
+.iban-intestatario {
+    font-size: 17px;
+
+    font-style: italic;
+}
+
+.iban {
+    font-size: clamp(17px, 4.6vw, 21px);
+
+    font-weight: 600;
+
+    font-variant-numeric: lining-nums;
+
+    letter-spacing: 1px;
+
+    word-break: break-word;
+
+    user-select: all;
+}
+
+.btn-copia {
+    margin-top: 6px;
+
+    padding: 8px 26px;
+
+    border: 1px solid #718c62;
+
+    border-radius: 999px;
+
+    background: transparent;
+
+    color: #506044;
+
+    font-family: "Cormorant Garamond", Georgia, serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-copia:hover {
+    background-color: #718c62;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   INDICATORE "SCORRI VERSO IL BASSO"
+   Fisso in fondo allo schermo, sparisce arrivati alla fine
+========================================================= */
+
+.scorri {
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 18px;
+
+    z-index: 50;
 
     display: flex;
 
@@ -621,88 +787,66 @@ h3 {
 
     align-items: center;
 
-    box-shadow: 0 4px 15px rgba(80, 96, 68, 0.05);
-}
+    gap: 4px;
 
-.countdown-item span {
-    font-family: "Cormorant Garamond", serif;
+    padding: 8px 18px 10px;
 
-    font-size: 40px;
+    border: none;
 
-    font-weight: bold;
+    border-radius: 999px;
 
-    color: #718c62;
+    background: rgba(252, 248, 239, 0.97);
 
-    line-height: 1;
-
-    margin-bottom: 5px;
-}
-
-.countdown-item label {
-    font-size: 12px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1.5px;
-
-    color: #506044;
-}
-
-
-/* =========================================================
-   SEZIONE MAPPA GOOGLE
-========================================================= */
-
-.mappa-box {
-    margin-top: 25px;
-
-    text-align: center;
-}
-
-.frase-mappa {
-    font-size: 17px;
-
-    line-height: 1.6;
+    box-shadow: 0 4px 14px rgba(80, 96, 68, 0.15);
 
     color: #506044;
 
-    margin-bottom: 20px;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
+
+    font-size: 21px;
+
+    font-weight: normal;
+
+    letter-spacing: 0;
+
+    cursor: pointer;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform: translateX(-50%);
+
+    transition: opacity 0.4s ease;
 }
 
-.btn-mappa {
-    display: inline-block;
+.scorri.visibile {
+    opacity: 1;
 
-    padding: 13px 28px;
+    pointer-events: auto;
 
-    border: 1px solid #718c62;
-
-    border-radius: 30px;
-
-    background: rgba(255, 255, 255, 0.9);
-
-    color: #718c62;
-
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: 16px;
-
-    text-decoration: none;
-
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        transform 0.2s ease,
-        box-shadow 0.3s ease;
+    animation: rimbalzo 1.8s ease-in-out infinite;
 }
 
-.btn-mappa:hover {
-    background-color: #718c62;
+.scorri-freccia {
+    width: 11px;
 
-    color: white;
+    height: 11px;
 
-    transform: translateY(-2px);
+    border-right: 1.5px solid #718c62;
 
-    box-shadow: 0 6px 20px rgba(113, 140, 98, 0.25);
+    border-bottom: 1.5px solid #718c62;
+
+    transform: rotate(45deg);
+}
+
+@keyframes rimbalzo {
+    0%, 100% {
+        transform: translate(-50%, 0);
+    }
+    50% {
+        transform: translate(-50%, 6px);
+    }
 }
 
 
@@ -713,26 +857,21 @@ h3 {
 .conferma {
     width: 100%;
 
-    max-width: 600px;
+    min-height: 100vh;
 
-    padding: 50px 45px;
+    min-height: 100svh;
+
+    padding: 4vh 5vw;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
 
     text-align: center;
-
-    background-color: rgba(255, 255, 255, 0.90);
-
-    background-image: url("../sito matrimonio/sfondo.png");
-
-    background-size: 600px auto;
-
-    background-position: center;
-
-    background-repeat: no-repeat;
-
-    border-radius: 4px;
-
-    box-shadow:
-        0 10px 40px rgba(80, 96, 68, 0.10);
 
     animation: comparsa 0.6s ease;
 }
@@ -745,7 +884,7 @@ h3 {
 .conferma h2 {
     margin: 0 0 10px;
 
-    font-size: 32px;
+    font-size: clamp(30px, 3.8vw, 50px);
 
     line-height: 1.3;
 
@@ -755,11 +894,11 @@ h3 {
 }
 
 .conferma p {
-    margin: 0 0 30px;
+    margin: 0 0 25px;
 
-    font-size: 17px;
+    font-size: clamp(19px, 4.9vw, 24px);
 
-    line-height: 1.6;
+    line-height: 1.5;
 
     color: #596052;
 }
@@ -789,23 +928,25 @@ h3 {
 
     width: 100%;
 
-    height: 52px;
+    max-width: 480px;
 
-    padding: 0 18px;
+    height: 56px;
+
+    padding: 0 20px;
 
     margin: 10px 0;
 
     border: 1px solid #c5d2bb;
 
-    border-radius: 8px;
+    border-radius: 10px;
 
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.9);
 
     color: #506044;
 
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Cormorant Garamond", Georgia, serif;
 
-    font-size: 16px;
+    font-size: clamp(16px, 1.6vw, 20px);
 
     outline: none;
 
@@ -833,19 +974,19 @@ h3 {
 .aggiungi {
     margin: 12px 0 25px;
 
-    padding: 10px 24px;
+    padding: 12px 28px;
 
     border: 1px solid #718c62;
 
-    border-radius: 25px;
+    border-radius: 28px;
 
-    background: transparent;
+    background: rgba(255, 255, 255, 0.6);
 
     color: #718c62;
 
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
 
-    font-size: 14px;
+    font-size: 21px;
 
     line-height: 1.2;
 
@@ -893,7 +1034,7 @@ h3 {
 
     margin: 25px 0;
 
-    font-size: 17px;
+    font-size: clamp(22px, 5.6vw, 26px);
 
     line-height: 1.4;
 
@@ -923,15 +1064,15 @@ h3 {
 .checkmark {
     position: relative;
 
-    width: 24px;
+    width: 26px;
 
-    height: 24px;
+    height: 26px;
 
     flex-shrink: 0;
 
     border: 1.5px solid #718c62;
 
-    border-radius: 5px;
+    border-radius: 6px;
 
     background: white;
 
@@ -965,9 +1106,24 @@ h3 {
 
     color: white;
 
-    font-size: 17px;
+    font-size: 18px;
 
     line-height: 1;
+}
+
+
+/* =========================================================
+   MESSAGGIO DI ERRORE
+========================================================= */
+
+.conferma .messaggio {
+    min-height: 1.6em;
+
+    margin: -10px 0 15px;
+
+    font-size: clamp(20px, 5vw, 23px);
+
+    color: #a4553f;
 }
 
 
@@ -978,33 +1134,38 @@ h3 {
 .invia {
     display: inline-block;
 
-    padding: 13px 38px;
+    padding: 15px 42px;
 
     border: none;
 
-    border-radius: 25px;
+    border-radius: 30px;
 
     background-color: #718c62;
 
     color: white;
 
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
 
-    font-size: 16px;
+    font-size: 23px;
 
     line-height: 1.2;
 
     cursor: pointer;
 
+    box-shadow: 0 6px 20px rgba(113, 140, 98, 0.25);
+
     transition:
         background-color 0.3s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
 }
 
 .invia:hover:not(:disabled) {
     background-color: #5f7952;
 
     transform: translateY(-2px);
+
+    box-shadow: 0 8px 25px rgba(95, 121, 82, 0.35);
 }
 
 .invia:disabled {
@@ -1033,9 +1194,9 @@ h3 {
 
     color: #718c62;
 
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
 
-    font-size: 14px;
+    font-size: 21px;
 
     line-height: 1.4;
 
@@ -1119,7 +1280,7 @@ h3 {
 
     color: #596052;
 
-    font-size: 17px;
+    font-size: 23px;
 
     line-height: 1.6;
 }
@@ -1141,6 +1302,10 @@ h3 {
     font-size: 45px;
 
     line-height: 1;
+}
+
+.chiudi-popup {
+    margin-top: 25px;
 }
 
 
@@ -1198,78 +1363,38 @@ h3 {
 
 
 /* =========================================================
-   TABLET (max-width: 768px)
+   FORMATO CARTONCINO
+   (dopo le regole delle singole pagine, così le sovrascrive)
 ========================================================= */
 
-@media (max-width: 768px) {
+.container {
+    justify-content: flex-start;
 
-    .container {
-        min-height: 100vh;
+    padding: 24px 12px 40px;
 
-        padding: 40px 20px;
-    }
+    gap: 24px;
+}
 
-    .invito,
-    .countdown-page,
-    .conferma {
-        max-width: 520px;
+.conferma {
+    width: var(--card);
 
-        padding: 45px 35px;
+    min-height: calc(100vh - 64px);
 
-        background-size: 520px auto;
-    }
+    min-height: calc(100svh - 64px);
 
-    h1 {
-        font-size: 55px;
-    }
+    padding:
+        calc(var(--fiori) * 0.40)
+        clamp(22px, 6vw, 56px)
+        calc(var(--fiori) * 0.45);
+}
 
-    .data {
-        font-size: 30px;
-    }
+.conferma h2,
+.popup-card h2 {
+    font-family: "Parisienne", "Cormorant Garamond", cursive;
 
-    /* Adattamento Busta per Tablet */
-    .envelope {
-        width: 440px;
+    font-weight: normal;
 
-        height: 300px;
-    }
-
-    .flap {
-        border-left-width: 220px;
-
-        border-right-width: 220px;
-
-        border-top-width: 160px;
-    }
-
-    .pocket {
-        border-left-width: 220px;
-
-        border-right-width: 220px;
-
-        border-bottom-width: 170px;
-    }
-
-    .wax-seal {
-        top: 135px;
-
-        width: 62px;
-
-        height: 62px;
-    }
-
-    .letter-preview {
-        width: 390px;
-
-        height: 250px;
-    }
-
-    .letter-title {
-        font-size: 34px;
-
-        margin-top: 35px;
-    }
-
+    font-size: clamp(30px, 8vw, 40px);
 }
 
 
@@ -1280,177 +1405,21 @@ h3 {
 @media (max-width: 600px) {
 
     .container {
-        width: 100%;
-
-        min-height: 100vh;
-
-        padding: 30px 15px;
-    }
-
-    .invito,
-    .countdown-page,
-    .conferma {
-        width: 100%;
-
-        padding: 40px 22px;
-
-        border-radius: 4px;
-
-        background-size: 100% auto;
-    }
-
-    h1 {
-        font-size: 46px;
-    }
-
-    .ampersand {
-        font-size: 30px;
-
-        margin: 6px 0;
-    }
-
-    h3 {
-        margin-top: 30px;
-
-        font-size: 21px;
-    }
-
-    .testo {
-        font-size: 16px;
-
-        line-height: 1.7;
-    }
-
-    .data {
-        font-size: 25px;
-
-        letter-spacing: 2px;
-    }
-
-    .location {
-        margin-top: 30px;
-
-        font-size: 17px;
-    }
-
-    .location strong {
-        font-size: 17px;
-
-        letter-spacing: 1.5px;
-    }
-
-    .conferma-presenza {
-        margin-top: 35px;
-    }
-
-    .conferma-presenza button {
-        width: 100%;
-
-        max-width: 280px;
-
-        padding: 13px 20px;
-
-        font-size: 16px;
-    }
-
-    /* Adattamento Busta per Mobile */
-    .envelope {
-        width: 310px;
-
-        height: 210px;
-    }
-
-    .flap {
-        border-left-width: 155px;
-
-        border-right-width: 155px;
-
-        border-top-width: 115px;
-    }
-
-    .pocket {
-        border-left-width: 155px;
-
-        border-right-width: 155px;
-
-        border-bottom-width: 120px;
-    }
-
-    .wax-seal {
-        top: 95px;
-
-        width: 52px;
-
-        height: 52px;
-    }
-
-    .seal-initials {
-        font-size: 15px;
-    }
-
-    .letter-preview {
-        width: 270px;
-
-        height: 175px;
-
-        padding: 20px 15px;
-    }
-
-    .letter-title {
-        font-size: 26px;
-
-        margin-top: 20px;
-    }
-
-    .letter-sub {
-        font-size: 14px;
-    }
-
-    .envelope-hint {
-        font-size: 15px;
-
-        margin-top: 30px;
-    }
-
-    .envelope-wrapper.open .letter-preview {
-        transform: translate(-50%, -105px);
-    }
-
-    /* Countdown mobile grid */
-    .countdown-grid {
-        gap: 10px;
-    }
-
-    .countdown-item {
-        min-width: 70px;
-
-        padding: 10px 8px;
-    }
-
-    .countdown-item span {
-        font-size: 30px;
-    }
-
-    .countdown-item label {
-        font-size: 10px;
-    }
-
-    .conferma h2 {
-        font-size: 28px;
+        padding: 12px 12px 32px;
     }
 
     .conferma p {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .checkbox-container {
-        font-size: 15px;
+        font-size: 22px;
     }
 
     .invia {
         width: 100%;
 
-        max-width: 220px;
+        max-width: 240px;
     }
 
     .popup-card {
@@ -1458,7 +1427,7 @@ h3 {
     }
 
     .popup-card h2 {
-        font-size: 24px;
+        font-size: 32px;
     }
 
 }
@@ -1470,67 +1439,17 @@ h3 {
 
 @media (max-width: 400px) {
 
-    .container {
-        padding: 25px 12px;
-    }
-
-
-    .invito,
-    .conferma {
-        padding: 35px 20px;
-    }
-
-
-    h1 {
-        font-size: 40px;
-    }
-
-
-    .ampersand {
-        font-size: 28px;
-    }
-
-
-    h3 {
-        font-size: 20px;
-    }
-
-
-    .testo {
-        font-size: 15px;
-    }
-
-
-    .data {
-        font-size: 22px;
-
-        letter-spacing: 1px;
-    }
-
-
-    .location {
-        font-size: 16px;
-    }
-
-
-    .location strong {
-        font-size: 16px;
-    }
-
-
     .nomePersona {
         height: 50px;
 
-        font-size: 15px;
+        font-size: 17px;
     }
-
 
     .checkbox-container {
         gap: 9px;
 
-        font-size: 14px;
+        font-size: 21px;
     }
-
 
     .checkmark {
         width: 22px;
